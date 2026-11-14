@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel · Aqui Agora</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --amarelo:#FFD600; --magenta:#AD2B8F; --tinta:#8A1D72; --escuro:#4A0D3C; --rosa:#FA86DE; --fundo:#FFF9DB; --trilho:#FCE7F7; --borda:#EBC3E0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--escuro); font-family: 'Poppins', system-ui, sans-serif; }
+  button, select { font-family: inherit; cursor: pointer; }
+  header { background: var(--amarelo); padding: 28px clamp(16px, 4vw, 48px) 36px; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  .topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+  .marca { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--tinta); }
+  .marca small { display: block; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; }
+  .btn { min-height: 44px; padding: 0 22px; border-radius: 999px; border: 2px solid var(--tinta); background: #fff; color: var(--tinta); font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+  h1 { margin: 0 0 14px; display: inline-block; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(48px, 8vw, 96px); line-height: .95; color: var(--magenta); border-bottom: 4px solid var(--magenta); padding-bottom: 6px; }
+  .sub { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 17px; font-weight: 500; }
+  .selo { font-size: 13px; font-weight: 600; background: var(--rosa); padding: 4px 14px; border-radius: 999px; }
+  main { padding: 32px clamp(16px, 4vw, 48px) 64px; }
+  main .wrap { display: flex; flex-direction: column; gap: 28px; }
+  .filtros { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .grupo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .grupo b { color: var(--tinta); font-size: 15px; margin-right: 4px; }
+  .aba { min-height: 44px; padding: 0 22px; border-radius: 999px; font-size: 15px; font-weight: 600; border: 2px solid var(--magenta); background: #fff; color: var(--tinta); }
+  .aba[aria-pressed="true"] { background: var(--magenta); color: #fff; }
+  .periodo { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--magenta); background: var(--rosa); color: var(--escuro); font-size: 15px; font-weight: 600; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .kpi { border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 6px; background: var(--magenta); color: #fff; }
+  .kpi.total { background: var(--amarelo); color: var(--escuro); border: 3px solid var(--magenta); }
+  .kpi .nome { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; }
+  .kpi .nome .i { display: flex; color: var(--amarelo); }
+  .kpi.total .nome { color: var(--tinta); }
+  .kpi.total .nome .i { color: var(--tinta); }
+  .kpi .num { font-family: 'Bebas Neue', sans-serif; font-size: 76px; line-height: 1; }
+  .kpi.total .num { color: var(--tinta); }
+  .kpi .leg { font-size: 14px; font-weight: 500; }
+  .chip { align-self: flex-start; margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; background: var(--amarelo); color: var(--escuro); border-radius: 999px; padding: 5px 12px 5px 8px; font-size: 13px; font-weight: 600; }
+  .semanas { display: flex; align-items: flex-end; gap: 8px; height: 64px; margin-top: 10px; }
+  .semanas div { flex: 1 1 0; border-radius: 8px 8px 4px 4px; background: rgba(138,29,114,.35); }
+  .semanas div:last-child { background: var(--tinta); }
+  .rotulos { display: flex; gap: 8px; font-size: 12px; font-weight: 500; }
+  .rotulos span { flex: 1 1 0; text-align: center; }
+  .card { background: #fff; border: 2px solid var(--borda); border-radius: 32px; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+  h2 { margin: 0; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 44px; line-height: 1; color: var(--magenta); }
+  .card .d { font-size: 15px; font-weight: 500; }
+  .rolagem { overflow-x: auto; }
+  .tab { min-width: 540px; }
+  .linha { display: grid; grid-template-columns: minmax(190px, 230px) minmax(120px, 1fr) 84px 56px; align-items: center; column-gap: 16px; padding: 12px 0; border-top: 1px solid #F3D3EA; }
+  .linha.cab { border: 0; padding: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--tinta); }
+  .linha .n { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 500; }
+  .bolha { width: 40px; height: 40px; border-radius: 999px; background: var(--trilho); color: var(--magenta); display: flex; align-items: center; justify-content: center; flex: none; }
+  .trilho { height: 18px; border-radius: 999px; background: var(--trilho); overflow: hidden; }
+  .trilho i { display: block; height: 100%; border-radius: 999px; background: #D058B4; }
+  .linha:nth-child(2) .trilho i { background: var(--magenta); }
+  .dir { text-align: right; font-size: 16px; font-weight: 500; }
+  .pct { text-align: right; font-weight: 700; font-size: 16px; color: var(--tinta); }
+  .nota { font-size: 13px; font-weight: 500; }
+  .duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; align-items: start; }
+  .barra { display: flex; height: 44px; border-radius: 999px; overflow: hidden; border: 2px solid var(--magenta); }
+  .leg-i { display: flex; align-items: flex-start; gap: 12px; }
+  .leg-i .bola { width: 18px; height: 18px; border-radius: 999px; margin-top: 4px; flex: none; border: 2px solid var(--magenta); }
+  .leg-i .t { flex: 1 1 auto; display: flex; flex-direction: column; }
+  .leg-i .t b { font-size: 16px; font-weight: 600; }
+  .leg-i .t span, .leg-i .v small { font-size: 13px; font-weight: 500; }
+  .leg-i .v { display: flex; flex-direction: column; align-items: flex-end; }
+  .leg-i .v b { font-size: 18px; color: var(--tinta); }
+  .mt { display: grid; grid-template-columns: minmax(130px, 1.4fr) repeat(3, minmax(70px, 1fr)); column-gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid #F3D3EA; }
+  .mt.cab { border: 0; padding: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--tinta); }
+  .mt.cab span:not(:first-child) { text-align: center; }
+  .mt .p { justify-self: center; min-width: 52px; text-align: center; padding: 6px 10px; border-radius: 999px; font-size: 15px; font-weight: 500; }
+  .mt .p.lider { background: var(--amarelo); font-weight: 700; }
+  .mt .n { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; }
+  .mt .n .i { color: var(--magenta); display: flex; }
+  .aviso-central { background: #fff; border: 2px solid var(--borda); border-radius: 28px; padding: 32px; text-align: center; font-size: 16px; font-weight: 500; }
+  .senha { max-width: 420px; margin: 40px auto; display: flex; flex-direction: column; gap: 14px; }
+  .senha input { min-height: 48px; border-radius: 999px; border: 2px solid var(--magenta); padding: 0 20px; font-size: 16px; font-family: inherit; }
+  .senha .erro { color: #8A1D72; font-weight: 600; min-height: 20px; }
+  @media print { header .btn, .filtros, .btn { display: none !important; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topo">
+      <div class="marca">Aqui Agora<small>Pesquisa de clientes</small></div>
+      <button class="btn" onclick="window.print()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11 M7 11l5 5 5-5 M5 20h14"></path></svg>
+        Exportar PDF
+      </button>
+    </div>
+    <h1>Resultados da pesquisa</h1>
+    <div class="sub"><span>De onde vieram os clientes entrevistados no caixa</span><span class="selo" id="selo" hidden>Dados ilustrativos</span></div>
+  </div>
+</header>
+<main><div class="wrap" id="app"></div></main>
+
+<script>
+// ============ CONFIGURAÇÃO ============
+// Cole aqui a URL do app da web do Apps Script (termina em /exec).
+// Enquanto estiver vazio, o painel mostra dados ilustrativos.
+const API = 'https://script.google.com/macros/s/AKfycbySnDchl_-KN5zWG9PVx4CqBEeOz34pkkY_V4qWQGHFXfXCyRCDaiFCEG5QWRCAIRcJ/exec';
+// ======================================
+
+const FONTES = [
+  { id: 'ig',  nome: 'Instagram',       icone: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M17.5 6.5h.01' },
+  { id: 'wa',  nome: 'WhatsApp',        icone: 'M3 21l1.6-4.7A8.5 8.5 0 1 1 8 19.6z M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z' },
+  { id: 'fb',  nome: 'Facebook',        icone: 'M14 8h2.5V4.5H14A3.5 3.5 0 0 0 10.5 8v2H8v3.5h2.5V21H14v-7.5h2.5L17 10h-3V8.5c0-.3.2-.5.5-.5z' },
+  { id: 'ind', nome: 'Indicação',       icone: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M3 20v-1a5 5 0 0 1 10 0v1 M16 5.2a3 3 0 0 1 0 5.6 M17 14.2a5 5 0 0 1 4 4.8v1' },
+  { id: 'res', nome: 'Resolvi entrar', icone: 'M4 9l1.5-5h13L20 9 M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9 M5 12v8h14v-8 M10 20v-5h4v5' },
+  { id: 'cli', nome: 'Já sou cliente',   icone: 'M4.3 15.3V20.5L8 18.6A9 9 0 1 0 4.3 15.3z M12 15.2l-3.1-2.9A2.3 2.3 0 0 1 12 9.1a2.3 2.3 0 0 1 3.1 3.2z' },
+  { id: 'out', nome: 'Outro motivo',    icone: 'M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z M8 9h8 M8 13h8 M8 17h5' }
+];
+const LOJAS = [['todas', 'Todas'], ['buritis', 'Buritis'], ['machadinho', 'Machadinho'], ['ariquemes', 'Ariquemes']];
+const svg = (d, w, sw) => '<svg width="' + w + '" height="' + w + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"></path></svg>';
+const ICONE_PESSOAS = 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M3 20v-1a5 5 0 0 1 10 0v1 M16 5.2a3 3 0 0 1 0 5.6 M17 14.2a5 5 0 0 1 4 4.8v1';
+
+// Dados ilustrativos (só aparecem quando API está vazio)
+function demo() {
+  const mk = (cur, prev, sem, weeks) => ({ cur: Object.assign({}, cur, { sem }), prev: Object.assign({}, prev, { sem }), weeks });
+  const s = {
+    ariquemes: mk({ ig: 137, wa: 103, fb: 43, ind: 77, res: 43, cli: 52, out: 21 }, { ig: 120, wa: 107, fb: 47, ind: 69, res: 56, cli: 47, out: 25 }, 4, [88, 102, 113, 125]),
+    buritis: mk({ ig: 87, wa: 83, fb: 37, ind: 62, res: 25, cli: 41, out: 15 }, { ig: 81, wa: 80, fb: 43, ind: 59, res: 28, cli: 38, out: 18 }, 3, [64, 71, 82, 95]),
+    machadinho: mk({ ig: 75, wa: 35, fb: 17, ind: 28, res: 20, cli: 22, out: 9 }, { ig: 66, wa: 39, fb: 19, ind: 30, res: 19, cli: 20, out: 11 }, 2, [38, 44, 49, 55])
+  };
+  const soma = (k) => { const o = {}; Object.keys(s.ariquemes[k]).forEach(c => o[c] = s.ariquemes[k][c] + s.buritis[k][c] + s.machadinho[k][c]); return o; };
+  s.todas = { cur: soma('cur'), prev: soma('prev'), weeks: [0, 1, 2, 3].map(i => s.ariquemes.weeks[i] + s.buritis.weeks[i] + s.machadinho.weeks[i]) };
+  return { stores: s };
+}
+
+let dados = null, lojaSel = 'ariquemes', dias = 30, chave = '', erro = '';
+const app = document.getElementById('app');
+
+async function carregar() {
+  if (!API) { dados = demo(); document.getElementById('selo').hidden = false; return desenhar(); }
+  chave = chave || localStorage.getItem('aq_chave') || '';
+  if (!chave) return desenharSenha();
+  app.innerHTML = '<div class="aviso-central">Carregando resultados…</div>';
+  try {
+    const r = await fetch(API + '?key=' + encodeURIComponent(chave) + '&days=' + dias);
+    const j = await r.json();
+    if (!j.ok) { localStorage.removeItem('aq_chave'); chave = ''; erro = 'Senha incorreta.'; return desenharSenha(); }
+    dados = j; desenhar();
+  } catch (e) {
+    app.innerHTML = '<div class="aviso-central">Não consegui carregar agora. Verifique a internet e <button class="btn" onclick="carregar()">tente de novo</button></div>';
+  }
+}
+function desenharSenha() {
+  app.innerHTML = '<form class="senha" id="fs"><label for="sn"><b>Senha do painel</b></label><input id="sn" type="password" autocomplete="current-password" required>' +
+    '<div class="erro" role="alert">' + erro + '</div><button class="btn" style="justify-content:center;background:var(--magenta);color:#fff">Entrar</button></form>';
+  document.getElementById('fs').onsubmit = (ev) => { ev.preventDefault(); chave = document.getElementById('sn').value; localStorage.setItem('aq_chave', chave); erro = ''; carregar(); };
+}
+
+const somaFontes = (o) => FONTES.reduce((a, f) => a + (o[f.id] || 0), 0);
+const pc = (n, r) => (r ? Math.round((n / r) * 100) : 0);
+function calc(k) {
+  const s = dados.stores[k];
+  const resp = somaFontes(s.cur), sem = s.cur.sem || 0, respAnt = somaFontes(s.prev);
+  const linhas = FONTES.map(f => ({ ...f, n: s.cur[f.id] || 0, p: pc(s.cur[f.id] || 0, resp), pAnt: respAnt ? pc(s.prev[f.id] || 0, respAnt) : null })).sort((a, b) => b.n - a.n);
+  return { resp, sem, total: resp + sem, linhas, weeks: s.weeks };
+}
+function chipDelta(l) {
+  if (l.pAnt === null) return '<span class="chip">Sem período anterior para comparar</span>';
+  const d = l.p - l.pAnt, a = Math.abs(d);
+  const seta = d > 0 ? 'M12 19V5 M6 11l6-6 6 6' : d < 0 ? 'M12 5v14 M6 13l6 6 6-6' : 'M5 12h14';
+  const txt = d > 0 ? '+' + d + ' pts' : d < 0 ? '−' + a + (a === 1 ? ' pt' : ' pts') : '0 pts';
+  return '<span class="chip">' + svg(seta, 16, 2.6) + txt + ' vs. período anterior</span>';
+}
+
+function desenhar() {
+  const c = calc(lojaSel);
+  const nomeLoja = LOJAS.find(l => l[0] === lojaSel)[1];
+  let h = '<div class="filtros"><div class="grupo"><b>Loja</b>' +
+    LOJAS.map(l => '<button class="aba" data-l="' + l[0] + '" aria-pressed="' + (l[0] === lojaSel) + '">' + l[1] + '</button>').join('') + '</div>' +
+    '<label class="grupo"><b>Período</b><select class="periodo" id="per" ' + (API ? '' : 'disabled') + '>' +
+    [7, 30, 90].map(d => '<option value="' + d + '"' + (d === dias ? ' selected' : '') + '>Últimos ' + d + ' dias</option>').join('') + '</select></label></div>';
+
+  if (!c.total) {
+    h += '<div class="aviso-central">Ainda não há respostas neste período para ' + nomeLoja + '.</div>';
+    app.innerHTML = h; return ligar();
+  }
+
+  const max = Math.max.apply(null, c.weeks.concat([1]));
+  h += '<section class="kpis"><div class="kpi total"><div class="nome"><span class="i">' + svg(ICONE_PESSOAS, 24, 1.8) + '</span>Total de registros</div>' +
+    '<div class="num">' + c.total + '</div><div class="leg">No período selecionado · ' + nomeLoja + '</div>' +
+    '<div class="semanas" role="img" aria-label="Registros por semana: ' + c.weeks.join(', ') + '">' + c.weeks.map(w => '<div style="height:' + Math.max(6, Math.round((w / max) * 100)) + '%"></div>').join('') + '</div>' +
+    '<div class="rotulos">' + c.weeks.map((w, i) => '<span>S' + (i + 1) + '</span>').join('') + '</div></div>' +
+    c.linhas.slice(0, 3).map(l => '<div class="kpi"><div class="nome"><span class="i">' + svg(l.icone, 24, 1.8) + '</span>' + l.nome + '</div><div class="num">' + l.p + '%</div><div class="leg">' + l.n + ' registros</div>' + chipDelta(l) + '</div>').join('') +
+    '</section>';
+
+  const maxN = c.linhas[0].n || 1;
+  h += '<section class="card"><div><h2>Respostas por origem</h2><div class="d">Distribuição das ' + c.resp + ' respostas · ' + nomeLoja + '</div></div>' +
+    '<div class="rolagem"><div class="tab"><div class="linha cab"><span>Origem</span><span>Participação</span><span class="dir">Registros</span><span class="dir">%</span></div>' +
+    c.linhas.map(l => '<div class="linha"><div class="n"><span class="bolha">' + svg(l.icone, 22, 1.8) + '</span>' + l.nome + '</div>' +
+      '<div class="trilho"><i style="width:' + Math.round((l.n / maxN) * 100) + '%"></i></div><span class="dir">' + l.n + '</span><span class="pct">' + l.p + '%</span></div>').join('') +
+    '</div></div><div class="nota">' + c.sem + (c.sem === 1 ? ' cliente não respondeu e ficou' : ' clientes não responderam e ficaram') + ' fora do cálculo. Percentuais sobre ' + c.resp + ' respostas, valores arredondados.</div></section>';
+
+  const n = (id) => c.linhas.find(l => l.id === id).n;
+  const dig = n('ig') + n('wa') + n('fb'), pre = n('ind') + n('res'), cli = n('cli'), out = n('out');
+  const grupos = [['Digital', 'Instagram, WhatsApp e Facebook', dig, '#AD2B8F'], ['Presencial e indicação', 'Indicação e Resolvi entrar', pre, '#FFD600'], ['Já é cliente', 'Clientes que já conheciam a loja', cli, '#4A0D3C'], ['Outro motivo', 'Respostas escritas pelo cliente', out, '#FA86DE']];
+  h += '<section class="duas"><div class="card"><div><h2>Digital x presencial</h2><div class="d">Quanto do movimento começa na internet</div></div>' +
+    '<div class="barra" role="img" aria-label="' + grupos.map(g => g[0] + ' ' + pc(g[2], c.resp) + '%').join(', ') + '">' + grupos.map(g => '<div style="flex:' + g[2] + ' 1 0;background:' + g[3] + '"></div>').join('') + '</div>' +
+    '<div style="display:flex;flex-direction:column;gap:14px">' + grupos.map(g => '<div class="leg-i"><span class="bola" style="background:' + g[3] + '"></span><div class="t"><b>' + g[0] + '</b><span>' + g[1] + '</span></div><div class="v"><b>' + pc(g[2], c.resp) + '%</b><small>' + g[2] + ' registros</small></div></div>').join('') + '</div></div>';
+
+  const lojasMt = ['buritis', 'machadinho', 'ariquemes'].map(k => calc(k));
+  h += '<div class="card"><div><h2>Comparar lojas</h2><div class="d">Em amarelo, a loja onde cada origem pesa mais</div></div><div class="rolagem"><div style="min-width:440px">' +
+    '<div class="mt cab"><span>Origem</span><span>Buritis</span><span>Machadinho</span><span>Ariquemes</span></div>' +
+    FONTES.map(f => {
+      const v = lojasMt.map(x => x.resp ? (x.linhas.find(l => l.id === f.id).n / x.resp) : -1);
+      const best = Math.max.apply(null, v);
+      return '<div class="mt"><div class="n"><span class="i">' + svg(f.icone, 20, 1.8) + '</span>' + f.nome + '</div>' +
+        v.map(x => '<span class="p' + (x === best && x >= 0 ? ' lider' : '') + '">' + (x < 0 ? '—' : Math.round(x * 100) + '%') + '</span>').join('') + '</div>';
+    }).join('') + '</div></div></div></section>';
+
+  app.innerHTML = h; ligar();
+}
+function ligar() {
+  app.querySelectorAll('.aba').forEach(b => b.onclick = () => { lojaSel = b.dataset.l; desenhar(); });
+  const per = document.getElementById('per');
+  if (per) per.onchange = () => { dias = parseInt(per.value, 10); carregar(); };
+}
+carregar();
+</script>
+</body>
+</html>
